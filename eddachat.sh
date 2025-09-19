@@ -11,7 +11,7 @@ read_username() {
     read -p "Enter your edda username: " USERNAME
   fi
   BASE_DIR="/staff/$USERNAME/eddachat"
-  MODEL_DIR="$BASE_DIR/eddachat_data"
+  MODEL_DIR="$BASE_DIR/ollama_data"
 }
 
 
