@@ -97,7 +97,7 @@ You can also get a list of available models, but it's better to research if that
 You can also delete models.
 
 ```bash
-./eddachat.sh listmodels
+./eddachat.sh deletemodel [name]
 ```
 
 # Usage notes
