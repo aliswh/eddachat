@@ -1,5 +1,5 @@
 #!/bin/bash
-# === All-in-one Ollama installer/manager with UI customization ===
+# === All-in-one EddaChat installer/manager with UI customization ===
 
 SCRIPT_DIR="$(pwd)"
 
@@ -10,13 +10,13 @@ read_username() {
   elif [ -z "$USERNAME" ]; then
     read -p "Enter your edda username: " USERNAME
   fi
-  BASE_DIR="/staff/$USERNAME/ollama"
-  MODEL_DIR="$BASE_DIR/ollama_data"
+  BASE_DIR="/staff/$USERNAME/eddachat"
+  MODEL_DIR="$BASE_DIR/eddachat_data"
 }
 
 
 # Install Ollama + UI
-install_ollama() {
+install_eddachat() {
   read_username
   echo "Creating directories in $BASE_DIR..."
   mkdir -p "$BASE_DIR" "$MODEL_DIR"
@@ -45,7 +45,7 @@ install_ollama() {
   echo "Downloading sample model gemma3:1b..."
   ollama pull gemma3:1b
 
-  echo "Cloning Ollama UI..."
+  echo "Cloning EddaChat UI..."
   cd "$BASE_DIR"
   git clone https://github.com/ollama-ui/ollama-ui || true
 
@@ -77,7 +77,6 @@ install_ollama() {
   # === Set default system prompt to Edda Sveinsdottir ===
   CHAT_JS="$BASE_DIR/ollama-ui/chat.js"
   if [ -f "$CHAT_JS" ]; then
-      # Only add our DOMContentLoaded snippet if not already present
       if ! grep -q 'Edda Sveinsdottir' "$CHAT_JS"; then
           echo "" >> "$CHAT_JS"
           echo "// Set default system prompt to Edda Sveinsdottir" >> "$CHAT_JS"
@@ -91,7 +90,6 @@ install_ollama() {
   else
       echo "Warning: chat.js not found at $CHAT_JS. Cannot set default system prompt."
   fi
-
 
   echo "=== Installation complete! ==="
   echo "Log out/in or run 'source ~/.bashrc' for env vars to apply."
@@ -192,20 +190,60 @@ download_model() {
   fi
 }
 
+# Delete a model
+delete_model() {
+  read_username
+  if [ -z "$1" ]; then
+    echo "Usage: $0 deletemodel [model-name]"
+    return 1
+  fi
+
+  MODEL="$1"
+  echo "Deleting model: $MODEL ..."
+
+  # Start Ollama server in background
+  echo "Starting temporary Ollama server..."
+  export CUDA_VISIBLE_DEVICES=0
+  export OLLAMA_NUM_PARALLEL=1
+  ollama serve &
+
+  SERVER_PID=$!
+  sleep 5  # give server time to start
+
+  # Try to remove the model
+  if ollama rm "$MODEL"; then
+    echo "Model '$MODEL' deleted successfully."
+  else
+    echo "Failed to delete model '$MODEL'. Make sure the model exists."
+  fi
+
+  # Stop temporary server
+  echo "Stopping temporary Ollama server..."
+  kill "$SERVER_PID"
+  wait "$SERVER_PID" 2>/dev/null
+
+  echo "Done."
+}
+
+
+
 # === Main ===
 COMMAND="$1"; shift
 case "$COMMAND" in
-  install) install_ollama ;;
+  install) install_eddachat ;;
   start) start_server_and_ui "$@" ;;
   stop) stop_server ;;
   model) download_model "$@" ;;
   listmodels) list_models_remote ;;
+  deletemodel) delete_model "$@" ;;
   *)
     echo "Usage:"
-    echo "  $0 install              # install Ollama + UI and customize header"
+    echo "  $0 install              # install EddaChat + UI and customize header"
     echo "  $0 start [GPU]          # start server + launch UI"
     echo "  $0 stop                 # stop server"
     echo "  $0 model [model-name]   # download a model, interactive if no name"
     echo "  $0 listmodels           # list available models"
+    echo "  $0 deletemodel [name]   # delete a downloaded model"
     ;;
 esac
+
