@@ -52,7 +52,7 @@ You need to log into Edda and open a terminal window to write the following inst
     Install EddaChat.
 
     ```bash
-    ./eddachat.sh install
+    bash eddachat.sh install
     ```
     
     You may need to log out and log back in, or run `source ~/.bashrc` for the new environment variables to take effect.
@@ -65,7 +65,7 @@ You need to log into Edda and open a terminal window to write the following inst
 ### Start the server and UI
 
 ```bash
-./eddachat.sh start [GPU]
+bash eddachat.sh start [GPU]
 ```
 
 Replace [GPU] with the number of the GPU you want to use. If you don't specify one, it defaults to GPU 0. This command starts the Ollama server and opens the web UI in your browser. Please check which GPUs are free before starting to chat.
@@ -78,31 +78,31 @@ This command will show you which GPUs are free or in use.
 
 ### Stop the server
 ```bash
-./eddachat.sh stop
+bash eddachat.sh stop
 ```
 This command frees up the GPU resources you were using.
 
 ### Download additional models
 ```bash
-./eddachat.sh model [model-name]
+bash eddachat.sh model [model-name]
 ```
 
 You can find a list of models at the [Ollama library](https://ollama.com/library). Example:
 
 ```bash
-./eddachat.sh model gemma3:1b
+bash eddachat.sh model gemma3:1b
 ```
 
 You can also get a list of available models, but it's better to research if that model fits your needs before downloading it.
 
 ```bash
-./eddachat.sh listmodels
+bash eddachat.sh listmodels
 ```
 
 You can also delete models.
 
 ```bash
-./eddachat.sh deletemodel [name]
+bash eddachat.sh deletemodel [name]
 ```
 
 # Usage notes
@@ -126,9 +126,9 @@ All UI customizations (header, icon, and default system prompt) are automaticall
 # Troubleshooting
 Ollama command not found: Ensure you have run source ~/.bashrc or have logged out and back in.
 
-Server not reachable: Confirm that ./eddachat.sh start is running and that you are using the correct URL: http://localhost:8000. Otherwise, just try stopping the server and starting it again.
+Server not reachable: Confirm that bash eddachat.sh start is running and that you are using the correct URL: http://localhost:8000. Otherwise, just try stopping the server and starting it again.
 
-GPU busy: Use nvidia-smi to check which GPUs are available and specify an available one when starting the server (e.g., ./eddachat.sh start 1).
+GPU busy: Use nvidia-smi to check which GPUs are available and specify an available one when starting the server (e.g., bash eddachat.sh start 1).
 
 
 

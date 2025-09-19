@@ -43,7 +43,30 @@ install_eddachat() {
   fi
 
   echo "Downloading sample model gemma3:1b..."
-  ollama pull gemma3:1b
+
+  # Start temporary Ollama server
+  echo "Starting temporary Ollama server..."
+  export CUDA_VISIBLE_DEVICES=0
+  export OLLAMA_NUM_PARALLEL=1
+  ollama serve &
+
+  SERVER_PID=$!
+  sleep 5  # wait for server to initialize
+
+  # Download the model
+  if ollama pull gemma3:1b; then
+      echo "Model gemma3:1b downloaded successfully."
+  else
+      echo "Failed to download model gemma3:1b."
+  fi
+
+  # Stop temporary server
+  echo "Stopping temporary Ollama server..."
+  kill "$SERVER_PID"
+  wait "$SERVER_PID" 2>/dev/null
+
+  echo "Done."
+
 
   echo "Cloning EddaChat UI..."
   cd "$BASE_DIR"
