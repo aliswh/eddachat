@@ -11,9 +11,85 @@ Enjoy chatting with Edda! 💻✨
 
 ---
 
+
+## Prerequisites
+
+You need access to Edda. Follow the steps below for your operating system. If it looks too complicated, you can ask IT to set it up for you. The rest of the guide is much easier to follow.
+
+### Access Edda on Mac/Linux
+
+1. Open Terminal
+
+On macOS, open the Terminal app (press `Cmd + Space`, type “Terminal”).
+
+2.  SSH is Installed
+
+macOS and most Linux distributions have ssh preinstalled.
+You can check by running `ssh -V`. If it prints a version number, you’re good.
+
+3. Configure SSH (see below)
+
+Edit the SSH configuration file at ~/.ssh/config (create it if it doesn’t exist):
+
+```bash
+nano ~/.ssh/config
+```
+
+Add the configuration lines at the end of the file:
+
+```bash
+Host edda
+  HostName edda.nru.dk
+  User <nru-username>
+  ProxyJump hevesy
+
+Host hevesy
+  HostName hevesy.nru.dk
+  User <nru-username>
+```
+
+You can exit the editor by pressing `ctrl+X`. Save your changes when prompted by pressing `y` and `Enter`.
+
+
+4. Login
+
+Once configured, run:
+
+```bash
+ssh edda
+```
+
+Enter your NRU password when prompted (twice: once for hevesy, once for edda).
+
+
+### Access Edda on Windows
+
+On Windows, the simplest way to access Edda is to first log into ThinLinc and then SSH from there:
+
+1. Install and login to ThinLinc Client
+
+Download the ThinLinc client using the NRU wiki, or get support from IT.
+Once you have access to ThinLinc, you will have access to a Linux desktop environment on the remote server.
+
+2. SSH from ThinLinc to Edda
+
+Once logged into ThinLinc, open a terminal window inside the ThinLinc session. You can do that by searching in the Applications or pressing `Ctrl + Alt + T`.
+
+
+Use SSH to connect to Edda directly:
+
+```bash
+ssh edda
+```
+
+> Needs testing!!!
+
+
+
 ## Installation
 
 You need to log into Edda and open a terminal window to write the following instructions.
+
 
 1.  **Clone the repository**
     
