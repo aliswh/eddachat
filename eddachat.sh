@@ -2,6 +2,8 @@
 # === All-in-one EddaChat installer/manager with UI customization ===
 
 SCRIPT_DIR="$(pwd)"
+OLLAMA_PORT=11434
+WEB_PORT=8888
 
 # Prompt for edda username
 read_username() {
@@ -33,6 +35,9 @@ install_eddachat() {
     echo "export OLLAMA_MODELS=\"$MODEL_DIR\""
     echo "export OLLAMA_HOME=\"$BASE_DIR\""
     echo "export OLLAMA_USERNAME=\"$USERNAME\""
+    echo "export OLLAMA_HOST="http://localhost:$OLLAMA_PORT""
+    echo "export OLLAMA_PORT=$OLLAMA_PORT"
+    echo "export WEB_PORT=$WEB_PORT"
   } >> ~/.bashrc
   source ~/.bashrc
 
@@ -138,11 +143,11 @@ start_server_and_ui() {
   cd "$OLLAMA_HOME/ollama-ui"
   make
   if command -v xdg-open &> /dev/null; then
-    xdg-open http://localhost:8000
+    xdg-open http://localhost:$PORT
   elif command -v open &> /dev/null; then
-    open http://localhost:8000
+    open http://localhost:$PORT
   else
-    echo "Open http://localhost:8000 in your browser."
+    echo "Open http://localhost:$PORT in your browser."
   fi
 }
 
