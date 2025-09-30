@@ -75,7 +75,7 @@ install_eddachat() {
 
   echo "Cloning EddaChat UI..."
   cd "$BASE_DIR"
-  git clone https://github.com/ollama-ui/ollama-ui || true
+  #git clone https://github.com/ollama-ui/ollama-ui || true
 
   # === Customize UI header and add icon ===
   echo "Customizing UI header and adding icon..."
