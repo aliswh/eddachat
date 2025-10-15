@@ -136,8 +136,8 @@ start_server_and_ui() {
   sleep 1
   export CUDA_VISIBLE_DEVICES=$GPU
   export OLLAMA_NUM_PARALLEL=1
-  ollama serve &
-  sleep 5
+  #ollama serve &
+  #sleep 5
 
   echo "Launching UI..."
   cd "$OLLAMA_HOME/ollama-ui"
